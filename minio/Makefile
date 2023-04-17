@@ -1,0 +1,8 @@
+clean:
+	kubectl delete namespace/minio-ns
+install:
+	helm install -f ./minio-config.yaml -n minio-ns --create-namespace minio-proj bitnami/minio
+	sleep 10
+	kubectl port-forward --namespace minio-ns svc/minio-proj 9000:9000 &
+	kubectl port-forward --namespace minio-ns svc/minio-proj 9001:9001 &
+	kubectl port-forward --namespace lab7 svc/redis 6379:6379 &
